@@ -1,7 +1,9 @@
 import { ChangeEvent, useState } from "react";
+import useUpload from "src/hooks/useUpload";
 
 export default function Upload() {
   const [file, setFile] = useState<File>();
+  const { mutate: upload, isLoading } = useUpload();
 
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
@@ -9,11 +11,11 @@ export default function Upload() {
     }
   }
 
-  function handleUploadClick() {
+  async function handleUploadClick() {
     if (!file) {
       return;
     }
-    localStorage.setItem("video", URL.createObjectURL(file));
+    upload(file);
   }
 
   return (
@@ -26,7 +28,13 @@ export default function Upload() {
 
       {/* <div>{file && `${file.name} - ${file.type}`}</div> */}
 
-      <button onClick={handleUploadClick}>Upload</button>
+      <button
+        onClick={handleUploadClick}
+        aria-busy={isLoading ? "true" : "false"}
+        disabled={!file || isLoading}
+      >
+        Upload
+      </button>
     </div>
   );
 }
