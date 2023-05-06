@@ -1,9 +1,11 @@
 import ReactPlayer from "react-player";
 import useClearVideo from "src/hooks/useClearVideo";
 import UploadSubs from "src/components/UploadSubs";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import SubSeeker from "src/components/SubSeeker";
 
 export default function Player({ url }: { url: string }) {
+  const player = useRef(null);
   const [subs, setSubs] = useState([]);
   const { mutate: deleteVideo, isLoading } = useClearVideo();
 
@@ -22,14 +24,8 @@ export default function Player({ url }: { url: string }) {
       </div>
 
       <div className="grid">
-        <div className="subtitle-container">
-          {subs.map((sub) => (
-            <a key={sub.id} className="subtitle-line">
-              {sub.text}
-            </a>
-          ))}
-        </div>
-        <ReactPlayer url={url} controls={true} />
+        <SubSeeker subs={subs} player={player.current} />
+        <ReactPlayer ref={player} url={url} controls={true} />
       </div>
     </div>
   );

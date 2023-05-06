@@ -19,8 +19,10 @@
 .subtitle-container {
   max-height: 500px;
   overflow-x: scroll;
+  background-color: darkslategrey;
 }
 
 .subtitle-line {
   display: block;
+  color: white;
 }
