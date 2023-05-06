@@ -2204,6 +2204,11 @@ source-map-js@^1.0.2:
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
   integrity sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==
 
+srt-parser-2@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/srt-parser-2/-/srt-parser-2-1.2.2.tgz#4adbad6e3ff268bba0de54a5e450f2048cb3daa7"
+  integrity sha512-SlWIhy9mQGMY8BHv1MkeQbCx6gHUNG0NecZro4QIDxzIpBw3Q0kFjA4EWyE9I+H7VrmdPYBHlvtrKzMLFTKP0g==
+
 string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"

@@ -5,3 +5,6 @@ Security:
 
 Quality:
 1.
+
+Optimization:
+1. Encoding: Upload only the lowest acceptable quality (downsize everything)

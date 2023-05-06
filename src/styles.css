@@ -6,3 +6,21 @@
   max-width: 500px;
   margin: 0 auto;
 }
+
+.standard-button {
+  max-width: 150px;
+  height: fit-content;
+}
+
+.uploadsubs-container {
+  max-width: 300px;
+}
+
+.subtitle-container {
+  max-height: 500px;
+  overflow-x: scroll;
+}
+
+.subtitle-line {
+  display: block;
+}

@@ -1,5 +1,5 @@
 import "./styles.css";
-import Upload from "src/components/Upload";
+import Upload from "src/components/UploadVid";
 import Player from "src/components/Player";
 import useURL from "src/hooks/useURL";
 
