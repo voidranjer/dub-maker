@@ -4,7 +4,9 @@ Security:
 1. Secure rules for Firestore and Storage
 
 Quality:
-1.
+1. Fix all TypeScript errors
+2. Multiple users, multiple projects
+3. Responsive design
 
 Optimization:
 1. Encoding: Upload only the lowest acceptable quality (downsize everything)
