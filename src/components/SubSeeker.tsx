@@ -1,11 +1,13 @@
+import { useState } from "react";
 import useSubtitles from "src/hooks/useSubtitles";
 
 export default function SubSeeker({ player }) {
   const { data: subs, isLoading, isError, error } = useSubtitles();
+  const [count, setCount] = useState(0);
 
   if (isLoading) return <>Loading subtitles...</>;
   if (!subs || subs?.length === 0) return <>No subtitles uploaded...</>;
-  // if (!player) return <>Waiting for player...</>;
+  if (!player) return <>Waiting for player...</>;
 
   return (
     <div className="subtitle-container">
@@ -14,7 +16,7 @@ export default function SubSeeker({ player }) {
           key={sub.id}
           className="subtitle-line"
           onClick={() => {
-            player.seekTo(parseFloat(sub.startSeconds));
+            player.current.seekTo(parseFloat(sub.startSeconds));
           }}
         >
           {sub.text}

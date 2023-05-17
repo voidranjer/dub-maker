@@ -5,7 +5,7 @@ import { useRef } from "react";
 import SubSeeker from "src/components/SubSeeker";
 
 export default function Player({ url }: { url: string }) {
-  const player = useRef(null);
+  const player = useRef<ReactPlayer>(null);
   const { mutate: deleteVideo, isLoading } = useClearVideo();
 
   return (
@@ -23,7 +23,7 @@ export default function Player({ url }: { url: string }) {
       </div>
 
       <div className="grid">
-        <SubSeeker player={player.current} />
+        <SubSeeker player={player} />
         <ReactPlayer ref={player} url={url} controls={true} />
       </div>
     </div>
