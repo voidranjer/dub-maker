@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import useUpload from "src/hooks/useUpload";
+import useUpload from "src/hooks/useUploadVid";
 
 export default function Upload() {
   const [file, setFile] = useState<File>();

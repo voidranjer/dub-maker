@@ -1,8 +1,9 @@
 import { ChangeEvent, useState } from "react";
-import srtParser2 from "srt-parser-2";
+import useUploadSubs from "src/hooks/useUploadSubs";
 
-export default function UploadSubs({ setSubs }) {
+export default function UploadSubs() {
   const [file, setFile] = useState<File>();
+  const { mutate: uploadSubs, isLoading } = useUploadSubs();
 
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
@@ -15,9 +16,8 @@ export default function UploadSubs({ setSubs }) {
       return;
     }
 
-    const parser = new srtParser2();
     const raw = await file.text();
-    setSubs(parser.fromSrt(raw));
+    await uploadSubs(raw);
   }
 
   return (
@@ -28,8 +28,8 @@ export default function UploadSubs({ setSubs }) {
 
       <button
         onClick={handleUploadClick}
-        // aria-busy={isLoading ? "true" : "false"}
-        // disabled={!file || isLoading}
+        aria-busy={isLoading ? "true" : "false"}
+        disabled={!file || isLoading}
       >
         Upload Subtitles
       </button>

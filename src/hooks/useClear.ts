@@ -4,8 +4,8 @@ import { db } from "src/lib/firebase";
 
 export default function useClearVideo() {
   async function deleteVid() {
-    const docRef = doc(db, "temp/base");
-    await deleteDoc(docRef);
+    await deleteDoc(doc(db, "temp/vid1"));
+    await deleteDoc(doc(db, "temp/subs1"));
   }
 
   return useMutation(deleteVid);

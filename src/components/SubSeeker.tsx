@@ -1,5 +1,11 @@
-export default function SubSeeker({ subs, player }) {
-  if (!player) return <>Waiting for player...</>;
+import useSubtitles from "src/hooks/useSubtitles";
+
+export default function SubSeeker({ player }) {
+  const { data: subs, isLoading, isError, error } = useSubtitles();
+
+  if (isLoading) return <>Loading subtitles...</>;
+  if (!subs || subs?.length === 0) return <>No subtitles uploaded...</>;
+  // if (!player) return <>Waiting for player...</>;
 
   return (
     <div className="subtitle-container">

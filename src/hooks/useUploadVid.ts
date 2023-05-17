@@ -10,7 +10,7 @@ export default function useUpload() {
     await uploadBytesResumable(storageRef, file); // TODO: Progress bar (resumable - allows for monitoring)
 
     const url = await getDownloadURL(storageRef);
-    const docRef = doc(db, "temp/base");
+    const docRef = doc(db, "temp/vid1");
     await setDoc(docRef, { url });
   }
 
