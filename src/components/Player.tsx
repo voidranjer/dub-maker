@@ -3,6 +3,7 @@ import useClearVideo from "src/hooks/useClear";
 import UploadSubs from "src/components/UploadSubs";
 import { useRef } from "react";
 import SubSeeker from "src/components/SubSeeker";
+import AudioRecorder from "src/components/AudioRecorder";
 
 export default function Player({ url }: { url: string }) {
   const player = useRef<ReactPlayer>(null);
@@ -25,6 +26,10 @@ export default function Player({ url }: { url: string }) {
       <div className="grid">
         <SubSeeker player={player} />
         <ReactPlayer ref={player} url={url} controls={true} />
+      </div>
+
+      <div>
+        <AudioRecorder />
       </div>
     </div>
   );

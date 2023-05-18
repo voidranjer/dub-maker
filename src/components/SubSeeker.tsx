@@ -1,9 +1,7 @@
-import { useState } from "react";
 import useSubtitles from "src/hooks/useSubtitles";
 
 export default function SubSeeker({ player }) {
   const { data: subs, isLoading, isError, error } = useSubtitles();
-  const [count, setCount] = useState(0);
 
   if (isLoading) return <>Loading subtitles...</>;
   if (!subs || subs?.length === 0) return <>No subtitles uploaded...</>;

@@ -17,7 +17,7 @@
 }
 
 .subtitle-container {
-  max-height: 500px;
+  max-height: 400px;
   overflow-x: scroll;
   background-color: darkslategrey;
 }
@@ -25,4 +25,12 @@
 .subtitle-line {
   display: block;
   color: white;
+}
+
+.audio-container {
+  margin-top: 50px;
+}
+
+.recording-button {
+  background-color: darkred;
 }
