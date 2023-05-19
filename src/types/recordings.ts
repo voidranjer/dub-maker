@@ -1,6 +1,5 @@
 export interface RecordingSnippet {
-  startSeconds: number;
-  endSeconds: number;
+  start: number;
   audioBlob: Blob;
 }
 

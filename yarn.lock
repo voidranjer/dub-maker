@@ -2049,13 +2049,18 @@ queue-microtask@^1.2.2:
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
-react-audio-voice-recorder@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-audio-voice-recorder/-/react-audio-voice-recorder-1.1.1.tgz#cbe9017daee1b1b4a4b2fceaf61b851c9c3285c0"
-  integrity sha512-tgkRxGvlYUMpBgT7zBOL/6x9k0aHYvq8F48ZvP2pJL+eZhTedR4uFRXqdUqMg9DamOcRGTcy8W//4yoORuyiag==
+react-audio-voice-recorder@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/react-audio-voice-recorder/-/react-audio-voice-recorder-1.1.3.tgz#f4c248ad51295867a748e27153df890d26b2841a"
+  integrity sha512-RdIMe38LYpBlAAH/NaNrYMwUXQQxYwH0OaizHlqa57/gWNYgmfx8Rx9I9c0+dyFHdmTuRvKpvkLxoLztAvSCkg==
   dependencies:
     react "^18.2.0"
     react-dom "^18.2.0"
+
+react-countdown-circle-timer@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/react-countdown-circle-timer/-/react-countdown-circle-timer-3.2.1.tgz#5d3a3560e1b5b501356e733e76d269506611a0ab"
+  integrity sha512-yBAy/9ILXOiFbLBM+3jS72TW5LeRcH8wkRC9NNqMpUkCXkGjSnaeRbJMsR9lsYF0oVXjSDbJaRbCuVMT+9HnKA==
 
 react-dom@^18.2.0:
   version "18.2.0"

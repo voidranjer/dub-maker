@@ -11,7 +11,8 @@ export default function Player({ url }: { url: string }) {
   const player = useRef<ReactPlayer>(null);
   const { mutate: deleteVideo, isLoading: deleteLoading } = useClearVideo();
   const { data: subs, isLoading: subsLoading } = useSubtitles();
-  const { setCurrSeconds, setCurrStart, isPlaying } = useAutoStop(subs);
+  const { setCurrSeconds, setCurrStart, isPlaying, currStart, currDuration } =
+    useAutoStop(subs);
 
   return (
     <div>
@@ -46,7 +47,7 @@ export default function Player({ url }: { url: string }) {
       </div>
 
       <div>
-        <AudioRecorder />
+        <AudioRecorder start={currStart} duration={currDuration} />
       </div>
     </div>
   );
