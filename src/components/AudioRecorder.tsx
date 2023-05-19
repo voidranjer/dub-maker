@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAudioRecorder } from "react-audio-voice-recorder";
+import { RecordingSnippet, RecordingStore } from "src/types/recordings";
 
 export default function AudioRecorder() {
   const {
@@ -11,11 +12,17 @@ export default function AudioRecorder() {
     isPaused,
     recordingTime,
   } = useAudioRecorder();
+  const [recordings, setRecordings] = useState<RecordingStore>({});
 
   useEffect(() => {
     if (!recordingBlob) return;
 
-    console.log(recordingBlob);
+    const snippet: RecordingSnippet = {
+      audioBlob: recordingBlob,
+      startSeconds: 0,
+      endSeconds: 0,
+    };
+    setRecordings((prev) => ({ ...prev, 0: snippet }));
   }, [recordingBlob]);
 
   return (

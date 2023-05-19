@@ -15,7 +15,7 @@ export default function Player({ url }: { url: string }) {
         <UploadSubs />
         <button
           className="standard-button"
-          onClick={deleteVideo}
+          onClick={() => deleteVideo()}
           aria-busy={isLoading ? "true" : "false"}
           disabled={isLoading}
         >
@@ -25,7 +25,13 @@ export default function Player({ url }: { url: string }) {
 
       <div className="grid">
         <SubSeeker player={player} />
-        <ReactPlayer ref={player} url={url} controls={true} />
+        <ReactPlayer
+          ref={player}
+          url={url}
+          controls={true}
+          onSeek={() => console.log("seek")}
+          onProgress={(obj) => console.log(obj)}
+        />
       </div>
 
       <div>
