@@ -1,5 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import useUploadSubs from "src/hooks/useUploadSubs";
+import { SubtitleStore, Subtitle } from "src/types/subtitles";
+import srtParser2 from "srt-parser-2";
 
 export default function UploadSubs() {
   const [file, setFile] = useState<File>();
@@ -12,12 +14,21 @@ export default function UploadSubs() {
   }
 
   async function handleUploadClick() {
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
     const raw = await file.text();
-    await uploadSubs(raw);
+    const parser = new srtParser2();
+    const parsed = parser.fromSrt(raw);
+    const subtitleStore: SubtitleStore = {};
+    for (const sub of parsed) {
+      const subtitle: Subtitle = {
+        end: sub.endSeconds,
+        text: sub.text,
+      };
+      subtitleStore[sub.startSeconds] = subtitle;
+    }
+
+    await uploadSubs(JSON.stringify(subtitleStore));
   }
 
   return (

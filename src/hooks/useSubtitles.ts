@@ -1,21 +1,18 @@
 import { doc, getDoc } from "firebase/firestore";
 import { useQuery } from "react-query";
 import { db } from "src/lib/firebase";
-import { Subtitle } from "src/types/subtitles";
-import srtParser2 from "srt-parser-2";
+import { SubtitleStore } from "src/types/subtitles";
+import { SubsDoc } from "src/types/firestore";
 
 export default function useSubtitles() {
   async function fetchData() {
     const docRef = doc(db, "temp/subs1");
     const docSnap = await getDoc(docRef);
 
-    if (!docSnap.exists()) return []; // subtitles haven't been uploaded yet
-    const docData = docSnap.data();
-
-    const parser = new srtParser2();
-    const results = parser.fromSrt(docData.subs);
-    return results;
+    if (!docSnap.exists()) return {}; // subtitles haven't been uploaded yet
+    const docData: SubsDoc = docSnap.data() as SubsDoc;
+    return JSON.parse(docData.subs) as SubtitleStore;
   }
 
-  return useQuery<Subtitle[]>({ queryFn: fetchData, queryKey: "subtitles" });
+  return useQuery<SubtitleStore>({ queryFn: fetchData, queryKey: "subtitles" });
 }

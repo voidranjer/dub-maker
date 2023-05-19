@@ -9,20 +9,19 @@ export default function SubSeeker({ player }: PropType) {
   const { data: subs, isLoading, isError, error } = useSubtitles();
 
   if (isLoading) return <>Loading subtitles...</>;
-  if (!subs || subs?.length === 0) return <>No subtitles uploaded...</>;
+  if (!subs || Object.keys(subs).length === 0)
+    return <>No subtitles uploaded...</>;
   if (!player || player.current === null) return <>Waiting for player...</>;
 
   return (
     <div className="subtitle-container">
-      {subs.map((sub) => (
+      {Object.keys(subs).map((start) => (
         <a
-          key={sub.id}
+          key={start}
           className="subtitle-line"
-          onClick={() => {
-            player.current?.seekTo(parseFloat(sub.startSeconds.toString()));
-          }}
+          onClick={() => player.current?.seekTo(parseFloat(start))}
         >
-          {sub.text}
+          {subs[start].text}
         </a>
       ))}
     </div>

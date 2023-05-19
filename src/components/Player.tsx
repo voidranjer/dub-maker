@@ -29,8 +29,8 @@ export default function Player({ url }: { url: string }) {
           ref={player}
           url={url}
           controls={true}
-          onSeek={() => console.log("seek")}
-          onProgress={(obj) => console.log(obj)}
+          // onSeek={playedSeconds => console.log(obj)}
+          // onProgress={(obj) => console.log(obj)}
         />
       </div>
 
