@@ -1,14 +1,12 @@
 import ReactPlayer from "react-player";
-import useSubtitles from "src/hooks/useSubtitles";
+import { SubtitleStore } from "src/types/subtitles";
 
 interface PropType {
   player: React.RefObject<ReactPlayer>;
+  subs: SubtitleStore | undefined;
 }
 
-export default function SubSeeker({ player }: PropType) {
-  const { data: subs, isLoading, isError, error } = useSubtitles();
-
-  if (isLoading) return <>Loading subtitles...</>;
+export default function SubSeeker({ player, subs }: PropType) {
   if (!subs || Object.keys(subs).length === 0)
     return <>No subtitles uploaded...</>;
   if (!player || player.current === null) return <>Waiting for player...</>;

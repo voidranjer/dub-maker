@@ -4,10 +4,12 @@ import UploadSubs from "src/components/UploadSubs";
 import { useRef } from "react";
 import SubSeeker from "src/components/SubSeeker";
 import AudioRecorder from "src/components/AudioRecorder";
+import useSubtitles from "src/hooks/useSubtitles";
 
 export default function Player({ url }: { url: string }) {
   const player = useRef<ReactPlayer>(null);
-  const { mutate: deleteVideo, isLoading } = useClearVideo();
+  const { mutate: deleteVideo, isLoading: deleteLoading } = useClearVideo();
+  const { data: subs, isLoading: subsLoading } = useSubtitles();
 
   return (
     <div>
@@ -16,20 +18,25 @@ export default function Player({ url }: { url: string }) {
         <button
           className="standard-button"
           onClick={() => deleteVideo()}
-          aria-busy={isLoading ? "true" : "false"}
-          disabled={isLoading}
+          aria-busy={deleteLoading ? "true" : "false"}
+          disabled={deleteLoading}
         >
           Delete
         </button>
       </div>
 
       <div className="grid">
-        <SubSeeker player={player} />
+        {subsLoading ? (
+          <>Subtitles Loading...</>
+        ) : (
+          <SubSeeker player={player} subs={subs} />
+        )}
+
         <ReactPlayer
           ref={player}
           url={url}
           controls={true}
-          // onSeek={playedSeconds => console.log(obj)}
+          // onSeek={(playedSeconds) => console.log(subs[playedSeconds].end)}
           // onProgress={(obj) => console.log(obj)}
         />
       </div>
