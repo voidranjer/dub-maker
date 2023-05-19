@@ -5,11 +5,13 @@ import { useRef } from "react";
 import SubSeeker from "src/components/SubSeeker";
 import AudioRecorder from "src/components/AudioRecorder";
 import useSubtitles from "src/hooks/useSubtitles";
+import useAutoStop from "src/hooks/useAutoStop";
 
 export default function Player({ url }: { url: string }) {
   const player = useRef<ReactPlayer>(null);
   const { mutate: deleteVideo, isLoading: deleteLoading } = useClearVideo();
   const { data: subs, isLoading: subsLoading } = useSubtitles();
+  const { setCurrSeconds, setCurrStart, isPlaying } = useAutoStop(subs);
 
   return (
     <div>
@@ -35,9 +37,11 @@ export default function Player({ url }: { url: string }) {
         <ReactPlayer
           ref={player}
           url={url}
-          controls={true}
-          // onSeek={(playedSeconds) => console.log(subs[playedSeconds].end)}
-          // onProgress={(obj) => console.log(obj)}
+          playing={isPlaying}
+          progressInterval={1}
+          onSeek={(playedSeconds) => setCurrStart(playedSeconds)}
+          onProgress={(obj) => setCurrSeconds(obj.playedSeconds)}
+          fallback={<>Player loading...</>}
         />
       </div>
 
