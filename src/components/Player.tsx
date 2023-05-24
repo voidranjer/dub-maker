@@ -11,8 +11,14 @@ export default function Player({ url }: { url: string }) {
   const player = useRef<ReactPlayer>(null);
   const { mutate: deleteVideo, isLoading: deleteLoading } = useClearVideo();
   const { data: subs, isLoading: subsLoading } = useSubtitles();
-  const { setCurrSeconds, setCurrStart, isPlaying, currStart, currDuration } =
-    useAutoStop(subs);
+  const {
+    setCurrSeconds,
+    setCurrStart,
+    isPlaying,
+    currStart,
+    currDuration,
+    currSeconds,
+  } = useAutoStop(subs);
 
   return (
     <div>
@@ -32,7 +38,7 @@ export default function Player({ url }: { url: string }) {
         {subsLoading ? (
           <>Subtitles Loading...</>
         ) : (
-          <SubSeeker player={player} subs={subs} />
+          <SubSeeker player={player} subs={subs} currSeconds={currSeconds} />
         )}
 
         <ReactPlayer

@@ -32,5 +32,6 @@ export default function useAutoStop(subs: SubtitleStore | undefined) {
     isPlaying,
     currStart: start,
     currDuration: duration,
+    currSeconds,
   };
 }

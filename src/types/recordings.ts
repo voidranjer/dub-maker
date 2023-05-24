@@ -1,8 +1,8 @@
 export interface RecordingSnippet {
-  start: number;
+  // start: number;
   audioBlob: Blob;
 }
 
 export interface RecordingStore {
-  [id: number]: RecordingSnippet;
+  [start: number]: RecordingSnippet;
 }

@@ -22,23 +22,20 @@ export default function AudioRecorder({ start, duration }: PropsType) {
   } = useAudioRecorder();
   const [recordings, setRecordings] = useState<RecordingStore>({});
 
-  // console.log(mediaRecorder);
   useEffect(() => {
     if (!recordingBlob) return;
-
-    console.log(recordingBlob);
-    const snippet: RecordingSnippet = {
-      audioBlob: recordingBlob,
-      start,
-    };
-    setRecordings((prev) => ({ ...prev, 0: snippet }));
+    const snippet: RecordingSnippet = { audioBlob: recordingBlob };
+    setRecordings((prev) => ({ ...prev, [start]: snippet }));
   }, [recordingBlob]);
 
   async function handleClick() {
+    if (isRecording) {
+      stopRecording();
+      return;
+    }
     startRecording();
-    await sleep(duration);
-    stopRecording();
-    // const autostop = setTimeout(stopRecording, duration);
+    // await sleep(duration);
+    // stopRecording();
   }
 
   return (
@@ -48,7 +45,7 @@ export default function AudioRecorder({ start, duration }: PropsType) {
           <button className="recording-button" onClick={stopRecording}>
             Stop
           </button>
-          <CountdownCircleTimer
+          {/* <CountdownCircleTimer
             isPlaying
             duration={duration / 1000}
             size={100}
@@ -57,11 +54,14 @@ export default function AudioRecorder({ start, duration }: PropsType) {
             colorsTime={[10, 10, 2, 0]}
           >
             {({ remainingTime }) => remainingTime}
-          </CountdownCircleTimer>
+          </CountdownCircleTimer> */}
           <div>TODO: Disable button at 0 or when video aint loaded yet</div>
         </>
       ) : (
-        <button onClick={handleClick}>Record</button>
+        <>
+          <button onClick={handleClick}>Record</button>
+          {/* <button onClick={handlePlay}>Play</button> */}
+        </>
       )}
     </div>
   );

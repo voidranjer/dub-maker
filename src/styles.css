@@ -27,6 +27,11 @@
   color: white;
 }
 
+.subtitle-played {
+  display: block;
+  color: red;
+}
+
 .audio-container {
   margin-top: 50px;
 }
