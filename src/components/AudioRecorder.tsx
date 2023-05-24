@@ -1,68 +1,51 @@
-import { useEffect, useState } from "react";
-import { useAudioRecorder } from "react-audio-voice-recorder";
-import { RecordingSnippet, RecordingStore } from "src/types/recordings";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import sleep from "src/utils/sleep";
+import React, { useRef } from "react";
 
-interface PropsType {
-  start: number;
-  duration: number;
-}
+const AudioRecorder = () => {
+  const mediaRecorderRef = useRef(null);
+  const chunksRef = useRef([]);
 
-export default function AudioRecorder({ start, duration }: PropsType) {
-  const {
-    startRecording,
-    stopRecording,
-    togglePauseResume,
-    recordingBlob,
-    isRecording,
-    isPaused,
-    recordingTime,
-    mediaRecorder,
-  } = useAudioRecorder();
-  const [recordings, setRecordings] = useState<RecordingStore>({});
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorderRef.current = new MediaRecorder(stream);
 
-  useEffect(() => {
-    if (!recordingBlob) return;
-    const snippet: RecordingSnippet = { audioBlob: recordingBlob };
-    setRecordings((prev) => ({ ...prev, [start]: snippet }));
-  }, [recordingBlob]);
+      mediaRecorderRef.current.addEventListener("dataavailable", (event) => {
+        if (event.data.size > 0) {
+          chunksRef.current.push(event.data);
+        }
+      });
 
-  async function handleClick() {
-    if (isRecording) {
-      stopRecording();
-      return;
+      mediaRecorderRef.current.start();
+    } catch (error) {
+      console.error("Error accessing media devices:", error);
     }
-    startRecording();
-    // await sleep(duration);
-    // stopRecording();
-  }
+  };
+
+  const stopRecording = () => {
+    if (
+      mediaRecorderRef.current &&
+      mediaRecorderRef.current.state !== "inactive"
+    ) {
+      mediaRecorderRef.current.stop();
+    }
+    const blob = new Blob(chunksRef.current, { type: "audio/webm" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "recording.webm";
+    a.click();
+
+    URL.revokeObjectURL(url);
+    chunksRef.current = [];
+  };
 
   return (
-    <div className="audio-container">
-      {isRecording ? (
-        <>
-          <button className="recording-button" onClick={stopRecording}>
-            Stop
-          </button>
-          {/* <CountdownCircleTimer
-            isPlaying
-            duration={duration / 1000}
-            size={100}
-            strokeWidth={10}
-            colors={["#72CC50", "#72CC50", "#72CC50", "#B8293D"]}
-            colorsTime={[10, 10, 2, 0]}
-          >
-            {({ remainingTime }) => remainingTime}
-          </CountdownCircleTimer> */}
-          <div>TODO: Disable button at 0 or when video aint loaded yet</div>
-        </>
-      ) : (
-        <>
-          <button onClick={handleClick}>Record</button>
-          {/* <button onClick={handlePlay}>Play</button> */}
-        </>
-      )}
+    <div>
+      <button onClick={startRecording}>Start Recording</button>
+      <button onClick={stopRecording}>Stop Recording</button>
     </div>
   );
-}
+};
+
+export default AudioRecorder;

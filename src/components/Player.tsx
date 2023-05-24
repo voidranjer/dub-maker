@@ -3,9 +3,9 @@ import useClearVideo from "src/hooks/useClear";
 import UploadSubs from "src/components/UploadSubs";
 import { useEffect, useRef, useState } from "react";
 import SubSeeker from "src/components/SubSeeker";
-import AudioRecorder from "src/components/AudioRecorder";
 import useSubtitles from "src/hooks/useSubtitles";
 import useAutoStop from "src/hooks/useAutoStop";
+import AudioRecorder from "src/components/AudioRecorder";
 import round from "src/utils/round";
 
 export default function Player({ url }: { url: string }) {
