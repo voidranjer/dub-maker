@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import useUploadSubs from "src/hooks/useUploadSubs";
-import { SubtitleStore, Subtitle } from "src/types/subtitles";
+import { UploadSubData } from "src/types/firestore";
+import round from "src/utils/round";
 import srtParser2 from "srt-parser-2";
 
 export default function UploadSubs() {
@@ -19,16 +20,25 @@ export default function UploadSubs() {
     const raw = await file.text();
     const parser = new srtParser2();
     const parsed = parser.fromSrt(raw);
-    const subtitleStore: SubtitleStore = {};
-    for (const sub of parsed) {
-      const subtitle: Subtitle = {
-        end: sub.endSeconds,
-        text: sub.text,
-      };
-      subtitleStore[sub.startSeconds] = subtitle;
-    }
+    // parsed.sort((a, b) => a.startSeconds - b.startSeconds);
 
-    await uploadSubs(JSON.stringify(subtitleStore));
+    // const subtitleStore: SubtitleStore = {};
+    // for (const sub of parsed) {
+    //   const subtitle: Subtitle = {
+    //     end: round(sub.endSeconds),
+    //     text: sub.text,
+    //   };
+    //   subtitleStore[round(sub.startSeconds)] = subtitle;
+    // }
+
+    const subtitles: UploadSubData[] = parsed.map((sub) => ({
+      id: parseInt(sub.id),
+      start: round(sub.startSeconds),
+      end: round(sub.endSeconds),
+      text: sub.text,
+    }));
+
+    await uploadSubs(JSON.stringify(subtitles));
   }
 
   return (

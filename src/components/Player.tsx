@@ -6,6 +6,7 @@ import SubSeeker from "src/components/SubSeeker";
 import AudioRecorder from "src/components/AudioRecorder";
 import useSubtitles from "src/hooks/useSubtitles";
 import useAutoStop from "src/hooks/useAutoStop";
+import round from "src/utils/round";
 
 export default function Player({ url }: { url: string }) {
   const player = useRef<ReactPlayer>(null);
@@ -20,15 +21,25 @@ export default function Player({ url }: { url: string }) {
     currSeconds,
   } = useAutoStop(subs);
 
-  const [muted, setMuted] = useState(false);
-  useEffect(() => {
-    const recordingStore = { 4: "hi" };
-    const roundedKeySet = Object.keys(recordingStore).map((key) =>
-      Math.round(parseFloat(key))
-    );
-    if (roundedKeySet.includes(Math.round(currSeconds))) setMuted(true);
-    // else setMuted(false);
-  }, [currSeconds]);
+  // const [muted, setMuted] = useState(false);
+  // const [playheadDuration, setPlayheadDuration] = useState(0);
+  // const [playheadStart, setPlayheadStart] = useState(0);
+  // const recordingStore = { 4.1: { duration: 2.0 } };
+  // useEffect(() => {
+  //   const roundedCurrSecs = round(currSeconds);
+
+  //   if (muted && roundedCurrSecs - playheadStart >= playheadDuration) {
+  //     setMuted(false);
+  //     return;
+  //   }
+
+  //   if (Object.keys(recordingStore).includes(roundedCurrSecs.toString())) {
+  //     setPlayheadStart(roundedCurrSecs);
+  //     setMuted(true);
+  //     setPlayheadDuration(recordingStore[roundedCurrSecs].duration);
+  //   }
+  //   // else setMuted(false);
+  // }, [currSeconds]);
 
   return (
     <div>
@@ -48,7 +59,12 @@ export default function Player({ url }: { url: string }) {
         {subsLoading ? (
           <>Subtitles Loading...</>
         ) : (
-          <SubSeeker player={player} subs={subs} currSeconds={currSeconds} />
+          <SubSeeker
+            player={player}
+            subs={subs}
+            currSeconds={currSeconds}
+            setCurrStart={setCurrStart}
+          />
         )}
 
         <ReactPlayer
@@ -56,11 +72,12 @@ export default function Player({ url }: { url: string }) {
           url={url}
           playing={isPlaying}
           progressInterval={1}
-          onSeek={(playedSeconds) => setCurrStart(playedSeconds)}
+          // onSeek={(playedSeconds) => setCurrStart(round(playedSeconds - 0.1))}
+          // WARNING: bug when seeking using player controls instead of SubSeeker: "sub is undefined" because the selected seconds in the player controls does not have a subtitle that starts at the exact same second
           onProgress={(obj) => setCurrSeconds(obj.playedSeconds)}
           fallback={<>Player loading...</>}
           controls={true}
-          muted={muted}
+          // muted={muted}
         />
       </div>
 

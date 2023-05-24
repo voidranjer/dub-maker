@@ -15,16 +15,19 @@ export default function useAutoStop(subs: SubtitleStore | undefined) {
       return;
     }
 
+    const id = subs.startToId[start];
+    const sub = subs.subtitles[id];
+
     setPlaying(true);
-    setCurrEnd(subs[start].end);
+    setCurrEnd(sub.end);
 
     setStart(start);
-    setDuration((subs[start].end - start) * 1000);
+    setDuration((sub.end - start) * 1000);
   }
 
-  // useEffect(() => {
-  //   if (currSeconds >= currEnd) setPlaying(false);
-  // }, [currSeconds]);
+  useEffect(() => {
+    if (currSeconds >= currEnd) setPlaying(false);
+  }, [currSeconds]);
 
   return {
     setCurrSeconds, // set current position in the video

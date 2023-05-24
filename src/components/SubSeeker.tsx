@@ -5,26 +5,34 @@ interface PropsType {
   player: React.RefObject<ReactPlayer>;
   subs: SubtitleStore | undefined;
   currSeconds: number;
+  setCurrStart: (seconds: number) => void;
 }
 
-export default function SubSeeker({ player, subs, currSeconds }: PropsType) {
-  if (!subs || Object.keys(subs).length === 0)
-    return <>No subtitles uploaded...</>;
+export default function SubSeeker({
+  player,
+  subs,
+  currSeconds,
+  setCurrStart,
+}: PropsType) {
+  if (!subs) return <>No subtitles uploaded...</>;
   if (!player || player.current === null) return <>Waiting for player...</>;
 
   return (
     <div className="subtitle-container">
-      {Object.keys(subs).map((start) => (
+      {subs.subtitles.map((sub) => (
         <a
-          key={start}
+          key={sub.id}
           className={
-            currSeconds >= parseFloat(start)
-              ? "subtitle-played"
+            currSeconds >= sub.start && currSeconds < sub.end
+              ? "subtitle-playing"
               : "subtitle-line"
           }
-          onClick={() => player.current?.seekTo(parseFloat(start))}
+          onClick={() => {
+            player.current?.seekTo(sub.start);
+            setCurrStart(sub.start);
+          }}
         >
-          {subs[start].text}
+          {sub.text}
         </a>
       ))}
     </div>

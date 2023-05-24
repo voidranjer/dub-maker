@@ -6,10 +6,14 @@ export interface Subtitle {
   // startSeconds: number;
   // endTime: string;
   // endSeconds: number;
-  end: number;
+  id: number;
+  start: number;
+  end: number; // or duration
   text: string;
 }
 
 export interface SubtitleStore {
-  [start: string]: Subtitle; // note: should parse "start" back to a number when using it
+  idToStart: { [id: number]: number };
+  startToId: { [start: number]: number };
+  subtitles: Subtitle[]; // index = id
 }
