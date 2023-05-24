@@ -1,7 +1,7 @@
 import ReactPlayer from "react-player";
 import useClearVideo from "src/hooks/useClear";
 import UploadSubs from "src/components/UploadSubs";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import SubSeeker from "src/components/SubSeeker";
 import AudioRecorder from "src/components/AudioRecorder";
 import useSubtitles from "src/hooks/useSubtitles";
@@ -19,6 +19,16 @@ export default function Player({ url }: { url: string }) {
     currDuration,
     currSeconds,
   } = useAutoStop(subs);
+
+  const [muted, setMuted] = useState(false);
+  useEffect(() => {
+    const recordingStore = { 4: "hi" };
+    const roundedKeySet = Object.keys(recordingStore).map((key) =>
+      Math.round(parseFloat(key))
+    );
+    if (roundedKeySet.includes(Math.round(currSeconds))) setMuted(true);
+    // else setMuted(false);
+  }, [currSeconds]);
 
   return (
     <div>
@@ -49,6 +59,8 @@ export default function Player({ url }: { url: string }) {
           onSeek={(playedSeconds) => setCurrStart(playedSeconds)}
           onProgress={(obj) => setCurrSeconds(obj.playedSeconds)}
           fallback={<>Player loading...</>}
+          controls={true}
+          muted={muted}
         />
       </div>
 

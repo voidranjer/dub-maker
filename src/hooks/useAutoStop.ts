@@ -22,9 +22,9 @@ export default function useAutoStop(subs: SubtitleStore | undefined) {
     setDuration((subs[start].end - start) * 1000);
   }
 
-  useEffect(() => {
-    if (currSeconds >= currEnd) setPlaying(false);
-  }, [currSeconds]);
+  // useEffect(() => {
+  //   if (currSeconds >= currEnd) setPlaying(false);
+  // }, [currSeconds]);
 
   return {
     setCurrSeconds, // set current position in the video
