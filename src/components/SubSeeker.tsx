@@ -14,7 +14,7 @@ export default function SubSeeker({
   currSeconds,
   setCurrStart,
 }: PropsType) {
-  if (!subs) return <>No subtitles uploaded...</>;
+  if (!subs || !subs.subtitles) return <>No subtitles uploaded...</>;
   if (!player || player.current === null) return <>Waiting for player...</>;
 
   return (

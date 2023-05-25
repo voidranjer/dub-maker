@@ -8,6 +8,8 @@ import useAutoStop from "src/hooks/useAutoStop";
 import AudioRecorder from "src/components/AudioRecorder";
 import round from "src/utils/round";
 import { SubtitleStore } from "src/types/subtitles";
+import useRecordingStore from "src/hooks/useRecordingStore";
+import playBlob from "src/utils/playBlob";
 
 export default function Player({ url }: { url: string }) {
   const player = useRef<ReactPlayer>(null);
@@ -19,27 +21,30 @@ export default function Player({ url }: { url: string }) {
     setCurrStart,
     isPlaying,
     currStart,
-    currDuration,
+    currEnd,
     currSeconds,
   } = useAutoStop(subs);
+  const { addRecording, recordings } = useRecordingStore();
 
   const [muted, setMuted] = useState(false);
-  const [playheadStart, setPlayheadStart] = useState(0);
-  const [playheadEnd, setPlayheadEnd] = useState(0);
-  const recordingStore = { 4.1: { duration: 2.0 } };
+  const playheadEnd = useRef(0); // useState works here too! (i've decided to use useRef to potentially reduce rerenders)
   const roundedCurrSecs = round(currSeconds);
+
   useEffect(() => {
     if (!subs) return;
 
     // Note: This specific order of if-statements are required for optimal mute/unmute performance, tested.
-    if (Object.keys(subs.startToId).includes(roundedCurrSecs.toString())) {
-      setPlayheadEnd(subs.subtitles[subs.startToId[roundedCurrSecs]].end);
-      setPlayheadStart(roundedCurrSecs);
+    if (
+      !muted &&
+      Object.keys(recordings).includes(roundedCurrSecs.toString())
+    ) {
+      playheadEnd.current = recordings[roundedCurrSecs].end;
       setMuted(true);
+      playBlob(recordings[roundedCurrSecs].audioBlob);
       return;
     }
 
-    if (muted && roundedCurrSecs >= playheadEnd) {
+    if (muted && roundedCurrSecs >= playheadEnd.current) {
       setMuted(false);
       return;
     }
@@ -87,7 +92,11 @@ export default function Player({ url }: { url: string }) {
       </div>
 
       <div>
-        <AudioRecorder start={currStart} duration={currDuration} />
+        <AudioRecorder
+          start={currStart}
+          end={currEnd}
+          addRecording={addRecording}
+        />
       </div>
     </div>
   );

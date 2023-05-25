@@ -7,7 +7,7 @@ export default function useAutoStop(subs: SubtitleStore | undefined) {
   const [isPlaying, setPlaying] = useState(false);
 
   const [start, setStart] = useState(0);
-  const [duration, setDuration] = useState(0);
+  // const [duration, setDuration] = useState(0);
 
   function setCurrStart(start: number) {
     if (subs === undefined) {
@@ -22,11 +22,11 @@ export default function useAutoStop(subs: SubtitleStore | undefined) {
     setCurrEnd(sub.end);
 
     setStart(start);
-    setDuration((sub.end - start) * 1000);
+    // setDuration((sub.end - start) * 1000);
   }
 
   useEffect(() => {
-    // if (currSeconds >= currEnd) setPlaying(false);
+    if (currSeconds >= currEnd) setPlaying(false);
   }, [currSeconds]);
 
   return {
@@ -34,7 +34,8 @@ export default function useAutoStop(subs: SubtitleStore | undefined) {
     setCurrStart, // set current subtitle start time (when seeking)
     isPlaying,
     currStart: start,
-    currDuration: duration,
+    // currDuration: duration,
+    currEnd,
     currSeconds,
   };
 }
