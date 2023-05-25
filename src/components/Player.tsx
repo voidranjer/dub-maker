@@ -11,6 +11,10 @@ import { SubtitleStoreType } from "src/types/subtitles";
 import useRecordingStore from "src/hooks/useRecordingStore";
 import playBlob from "src/utils/playBlob";
 
+// chakra imports
+import { FcFullTrash } from "react-icons/fc";
+import { Box, Button, HStack, Heading, Icon } from "@chakra-ui/react";
+
 export default function Player({ url }: { url: string }) {
   const player = useRef<ReactPlayer>(null);
   const { mutate: deleteVideo, isLoading: deleteLoading } = useClearVideo();
@@ -52,34 +56,38 @@ export default function Player({ url }: { url: string }) {
   }, [currSeconds]);
 
   return (
-    <div>
-      <div className="flex bg-red-100 items-center">
-        <span className="text-4xl font-bold text-white py-8 ">
+    <>
+      <HStack w="100%" mb="10">
+        <Heading color="blue.500" marginRight="auto">
           Dub Maker v1
-        </span>
+        </Heading>
         <UploadSubs />
-        <button
-          className="ms-auto px-6 rounded-lg h-12 bg-red-500 hover:bg-red-600 text-white font-bold"
+        <Button
+          colorScheme="red"
           onClick={() => deleteVideo()}
-          aria-busy={deleteLoading ? "true" : "false"}
-          disabled={deleteLoading}
+          isLoading={deleteLoading}
+          loadingText="Deleting..."
+          // TODO: Add confirmation prompt
         >
+          <Icon as={FcFullTrash} mr="2" />
           Delete Project
-        </button>
-      </div>
+        </Button>
+      </HStack>
 
-      <div className="grid">
-        {subsLoading ? (
-          <>Subtitles Loading...</>
-        ) : (
-          <SubSeeker
-            player={player}
-            subs={subs}
-            currSeconds={currSeconds}
-            currStart={currStart}
-            setCurrStart={setCurrStart}
-          />
-        )}
+      <HStack spacing={10}>
+        <Box w="50%" maxH="70vh" overflowY="scroll">
+          {subsLoading ? (
+            <>Subtitles Loading...</>
+          ) : (
+            <SubSeeker
+              player={player}
+              subs={subs}
+              currSeconds={currSeconds}
+              currStart={currStart}
+              setCurrStart={setCurrStart}
+            />
+          )}
+        </Box>
 
         <ReactPlayer
           ref={player}
@@ -93,15 +101,13 @@ export default function Player({ url }: { url: string }) {
           controls={true}
           muted={muted}
         />
-      </div>
+      </HStack>
 
-      <div>
-        <AudioRecorder
-          start={currStart}
-          end={currEnd}
-          addRecording={addRecording}
-        />
-      </div>
-    </div>
+      <AudioRecorder
+        start={currStart}
+        end={currEnd}
+        addRecording={addRecording}
+      />
+    </>
   );
 }
