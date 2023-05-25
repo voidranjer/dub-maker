@@ -1,6 +1,6 @@
 // srt-parser-2 format: https://www.npmjs.com/package/srt-parser-2
 // Note: Parsed to this custom format when uploading to Firebase
-export interface Subtitle {
+export interface SubtitleType {
   // id: string;
   // startTime: string;
   // startSeconds: number;
@@ -12,8 +12,8 @@ export interface Subtitle {
   text: string;
 }
 
-export interface SubtitleStore {
+export interface SubtitleStoreType {
   idToStart: { [id: number]: number };
   startToId: { [start: number]: number };
-  subtitles: Subtitle[]; // index = id
+  subtitles: SubtitleType[]; // index = id
 }

@@ -7,7 +7,7 @@ import useSubtitles from "src/hooks/useSubtitles";
 import useAutoStop from "src/hooks/useAutoStop";
 import AudioRecorder from "src/components/AudioRecorder";
 import round from "src/utils/round";
-import { SubtitleStore } from "src/types/subtitles";
+import { SubtitleStoreType } from "src/types/subtitles";
 import useRecordingStore from "src/hooks/useRecordingStore";
 import playBlob from "src/utils/playBlob";
 
@@ -15,7 +15,7 @@ export default function Player({ url }: { url: string }) {
   const player = useRef<ReactPlayer>(null);
   const { mutate: deleteVideo, isLoading: deleteLoading } = useClearVideo();
   const { data, isLoading: subsLoading } = useSubtitles();
-  const subs: SubtitleStore = data as SubtitleStore;
+  const subs: SubtitleStoreType = data as SubtitleStoreType;
   const {
     setCurrSeconds,
     setCurrStart,
@@ -53,15 +53,18 @@ export default function Player({ url }: { url: string }) {
 
   return (
     <div>
-      <div className="grid">
+      <div className="flex bg-red-100 items-center">
+        <span className="text-4xl font-bold text-white py-8 ">
+          Dub Maker v1
+        </span>
         <UploadSubs />
         <button
-          className="standard-button"
+          className="ms-auto px-6 rounded-lg h-12 bg-red-500 hover:bg-red-600 text-white font-bold"
           onClick={() => deleteVideo()}
           aria-busy={deleteLoading ? "true" : "false"}
           disabled={deleteLoading}
         >
-          Delete
+          Delete Project
         </button>
       </div>
 
@@ -73,6 +76,7 @@ export default function Player({ url }: { url: string }) {
             player={player}
             subs={subs}
             currSeconds={currSeconds}
+            currStart={currStart}
             setCurrStart={setCurrStart}
           />
         )}

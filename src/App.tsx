@@ -9,15 +9,20 @@ export default function App() {
   const [data, isLoading, error] = useURL();
   const url = data?.url;
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-screen bg-slate-900">
+        <div className="spinner animate-spin" />
+      </div>
+    );
 
   return (
-    <div className="container app-container">
-      <h1>Dub Maker v1</h1>
-
-      {/* <Provider store={store}> */}
-      {url ? <Player url={url} /> : <Upload />}
-      {/* </Provider> */}
+    <div className="bg-slate-900">
+      <div className="container mx-auto pt-10 ">
+        {/* <Provider store={store}> */}
+        {url ? <Player url={url} /> : <Upload />}
+        {/* </Provider> */}
+      </div>
     </div>
   );
 }

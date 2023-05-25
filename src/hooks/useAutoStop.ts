@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { SubtitleStore } from "src/types/subtitles";
+import { SubtitleStoreType } from "src/types/subtitles";
 
-export default function useAutoStop(subs: SubtitleStore | undefined) {
+export default function useAutoStop(subs: SubtitleStoreType | undefined) {
   const [currSeconds, setCurrSeconds] = useState(0);
   const [currEnd, setCurrEnd] = useState(0);
   const [isPlaying, setPlaying] = useState(false);
@@ -26,7 +26,7 @@ export default function useAutoStop(subs: SubtitleStore | undefined) {
   }
 
   useEffect(() => {
-    if (currSeconds >= currEnd) setPlaying(false);
+    // if (currSeconds >= currEnd) setPlaying(false);
   }, [currSeconds]);
 
   return {

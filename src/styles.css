@@ -1,4 +1,18 @@
-.app-container {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.spinner {
+  border-top: 10px solid white;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+}
+
+/* .app-container {
   margin-top: 50px;
 }
 
@@ -32,10 +46,15 @@
   color: red;
 }
 
+.subtitle-current {
+  display: block;
+  color: green;
+}
+
 .audio-container {
   margin-top: 50px;
 }
 
 .recording-button {
   background-color: darkred;
-}
+} */

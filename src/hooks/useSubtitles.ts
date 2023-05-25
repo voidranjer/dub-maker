@@ -1,7 +1,7 @@
 import { doc, getDoc } from "firebase/firestore";
 import { useQuery } from "react-query";
 import { db } from "src/lib/firebase";
-import { SubtitleStore } from "src/types/subtitles";
+import { SubtitleStoreType } from "src/types/subtitles";
 import { SubsDoc, UploadSubData } from "src/types/firestore";
 
 export default function useSubtitles() {
@@ -21,7 +21,7 @@ export default function useSubtitles() {
       startToId[sub.start] = sub.id;
     }
 
-    const subtitleStore: SubtitleStore = {
+    const subtitleStore: SubtitleStoreType = {
       idToStart,
       startToId,
       subtitles: [{ id: 0, start: 0, end: 0, text: "" }, ...subtitles], // for some reason, srt-parser-2's IDs start with "1" instead of "0"
@@ -30,5 +30,8 @@ export default function useSubtitles() {
     return subtitleStore;
   }
 
-  return useQuery<SubtitleStore>({ queryFn: fetchData, queryKey: "subtitles" });
+  return useQuery<SubtitleStoreType>({
+    queryFn: fetchData,
+    queryKey: "subtitles",
+  });
 }
