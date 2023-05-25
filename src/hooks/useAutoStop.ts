@@ -26,7 +26,7 @@ export default function useAutoStop(subs: SubtitleStore | undefined) {
   }
 
   useEffect(() => {
-    if (currSeconds >= currEnd) setPlaying(false);
+    // if (currSeconds >= currEnd) setPlaying(false);
   }, [currSeconds]);
 
   return {

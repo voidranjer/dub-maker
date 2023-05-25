@@ -7,11 +7,13 @@ import useSubtitles from "src/hooks/useSubtitles";
 import useAutoStop from "src/hooks/useAutoStop";
 import AudioRecorder from "src/components/AudioRecorder";
 import round from "src/utils/round";
+import { SubtitleStore } from "src/types/subtitles";
 
 export default function Player({ url }: { url: string }) {
   const player = useRef<ReactPlayer>(null);
   const { mutate: deleteVideo, isLoading: deleteLoading } = useClearVideo();
-  const { data: subs, isLoading: subsLoading } = useSubtitles();
+  const { data, isLoading: subsLoading } = useSubtitles();
+  const subs: SubtitleStore = data as SubtitleStore;
   const {
     setCurrSeconds,
     setCurrStart,
@@ -21,25 +23,28 @@ export default function Player({ url }: { url: string }) {
     currSeconds,
   } = useAutoStop(subs);
 
-  // const [muted, setMuted] = useState(false);
-  // const [playheadDuration, setPlayheadDuration] = useState(0);
-  // const [playheadStart, setPlayheadStart] = useState(0);
-  // const recordingStore = { 4.1: { duration: 2.0 } };
-  // useEffect(() => {
-  //   const roundedCurrSecs = round(currSeconds);
+  const [muted, setMuted] = useState(false);
+  const [playheadStart, setPlayheadStart] = useState(0);
+  const [playheadEnd, setPlayheadEnd] = useState(0);
+  const recordingStore = { 4.1: { duration: 2.0 } };
+  const roundedCurrSecs = round(currSeconds);
+  useEffect(() => {
+    if (!subs) return;
 
-  //   if (muted && roundedCurrSecs - playheadStart >= playheadDuration) {
-  //     setMuted(false);
-  //     return;
-  //   }
+    // Note: This specific order of if-statements are required for optimal mute/unmute performance, tested.
+    if (Object.keys(subs.startToId).includes(roundedCurrSecs.toString())) {
+      setPlayheadEnd(subs.subtitles[subs.startToId[roundedCurrSecs]].end);
+      setPlayheadStart(roundedCurrSecs);
+      setMuted(true);
+      return;
+    }
 
-  //   if (Object.keys(recordingStore).includes(roundedCurrSecs.toString())) {
-  //     setPlayheadStart(roundedCurrSecs);
-  //     setMuted(true);
-  //     setPlayheadDuration(recordingStore[roundedCurrSecs].duration);
-  //   }
-  //   // else setMuted(false);
-  // }, [currSeconds]);
+    if (muted && roundedCurrSecs >= playheadEnd) {
+      setMuted(false);
+      return;
+    }
+    // else setMuted(false);
+  }, [currSeconds]);
 
   return (
     <div>
@@ -77,7 +82,7 @@ export default function Player({ url }: { url: string }) {
           onProgress={(obj) => setCurrSeconds(obj.playedSeconds)}
           fallback={<>Player loading...</>}
           controls={true}
-          // muted={muted}
+          muted={muted}
         />
       </div>
 
