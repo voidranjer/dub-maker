@@ -75,7 +75,7 @@ export default function Player({ url }: { url: string }) {
       </HStack>
 
       <HStack spacing={10}>
-        <Box w="50%" maxH="70vh" overflowY="scroll">
+        <Box w="50%">
           {subsLoading ? (
             <>Subtitles Loading...</>
           ) : (

@@ -2,7 +2,8 @@ import ReactPlayer from "react-player";
 import { SubtitleStoreType, SubtitleType } from "src/types/subtitles";
 
 // chakra imports
-import { Code } from "@chakra-ui/react";
+import { Box, Code, IconButton } from "@chakra-ui/react";
+import { FcBookmark } from "react-icons/fc";
 
 interface PropsType {
   player: React.RefObject<ReactPlayer>;
@@ -69,10 +70,22 @@ export default function SubSeeker({
   }
 
   return (
-    <div className="subtitle-container">
-      {subs.subtitles.map((sub) => (
-        <Line sub={sub} />
-      ))}
-    </div>
+    <Box position="relative">
+      <IconButton
+        icon={<FcBookmark />}
+        w="fit-content"
+        position="absolute"
+        colorScheme="purple"
+        size="lg"
+        right="5"
+        borderRadius="xl"
+        aria-label="Jump to current selected line"
+      />
+      <Box maxH="70vh" overflowY="scroll">
+        {subs.subtitles.map((sub) => (
+          <Line sub={sub} />
+        ))}
+      </Box>
+    </Box>
   );
 }
