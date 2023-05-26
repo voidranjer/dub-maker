@@ -67,7 +67,7 @@ export default function SubSeeker({
       if (isPlaying) return "2px solid green";
       if (isSelected) return "2px dotted blue";
       // if (hasPlayed) return "2px solid gray";
-      return "none";
+      return "2px solid transparent"; // transparent border ensures that adding border doesn't add on to the size
     }
 
     const props = {
@@ -89,8 +89,8 @@ export default function SubSeeker({
       border: getBorder(),
       shadow: hasPlayed ? "md" : "none",
       fontWeight: isLastPlayed ? "bold" : "normal",
-      fontSize: isPlaying ? "lg" : "md",
-      my: "10px",
+      fontSize: isLastPlayed ? "lg" : "md",
+      my: "15px",
     };
 
     return (
