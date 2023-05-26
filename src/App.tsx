@@ -6,7 +6,7 @@ import useURL from "src/hooks/useURL";
 // import { store } from "src/redux/store";
 
 // chakra imports
-import { Box, Center, Container, Spinner } from "@chakra-ui/react";
+import { Box, Center, Spinner } from "@chakra-ui/react";
 
 export default function App() {
   const [data, isLoading, error] = useURL();
@@ -28,10 +28,12 @@ export default function App() {
     );
 
   return (
-    <Container maxW="container.xl" paddingTop="8" h="100vh">
-      {/* <Provider store={store}> */}
-      {url ? <Player url={url} /> : <Upload />}
-      {/* </Provider> */}
-    </Container>
+    <Box w="100vw" h="100vh">
+      <Box mx="20" paddingTop="8">
+        {/* <Provider store={store}> */}
+        {url ? <Player url={url} /> : <Upload />}
+        {/* </Provider> */}
+      </Box>
+    </Box>
   );
 }
