@@ -1,7 +1,7 @@
 import ReactPlayer from "react-player";
 import useClearVideo from "src/hooks/useClear";
 import UploadSubs from "src/components/UploadSubs";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import SubSeeker from "src/components/SubSeeker";
 import useSubtitles from "src/hooks/useSubtitles";
 import useCoreClock from "src/hooks/useCoreClock";
@@ -27,37 +27,12 @@ export default function Player({ url }: { url: string }) {
     setSelectedStart,
     selectedStart,
     playingStart,
-    playedSeconds,
+    playedSecondsRef,
   } = useCoreClock(subs);
-  const { addRecording, recordings } = useRecordingStore();
-
-  const [muted, setMuted] = useState(false);
-  // const playheadEnd = useRef(0); // useState works here too! (i've decided to use useRef to potentially reduce rerenders)
-  // const roundedCurrSecs = round(playedSeconds);
-
-  // useEffect(() => {
-  //   if (!subs) return;
-
-  //   // Note: This specific order of if-statements are required for optimal mute/unmute performance, tested.
-  //   if (
-  //     !muted &&
-  //     Object.keys(recordings).includes(roundedCurrSecs.toString())
-  //   ) {
-  //     playheadEnd.current = recordings[roundedCurrSecs].end;
-  //     setMuted(true);
-  //     playBlob(recordings[roundedCurrSecs].audioBlob);
-  //     return;
-  //   }
-
-  //   if (muted && roundedCurrSecs >= playheadEnd.current) {
-  //     setMuted(false);
-  //     return;
-  //   }
-  //   // else setMuted(false);
-  // }, [playedSeconds]);
+  const { addRecording, shouldMute } = useRecordingStore(playedSecondsRef);
 
   // rerender notification
-  console.log(playedSeconds.current);
+  console.log(playedSecondsRef.current);
 
   return (
     <>
@@ -106,11 +81,11 @@ export default function Player({ url }: { url: string }) {
             // WARNING: bug when seeking using player controls instead of SubSeeker: "sub is undefined" because the selected seconds in the player controls does not have a subtitle that starts at the exact same second
             // onProgress={(obj) => setPlayedSeconds(obj.playedSeconds)}
             onProgress={
-              (obj) => (playedSeconds.current = round(obj.playedSeconds)) // fine tune vars.progressInterval + vars.subsInterval (which affects the util/round.ts function precision) so that 0.0 to 0.9 seconds are all captured.
+              (obj) => (playedSecondsRef.current = round(obj.playedSeconds)) // fine tune vars.progressInterval + vars.subsInterval (which affects the util/round.ts function precision) so that 0.0 to 0.9 seconds are all captured.
             }
             fallback={<>Player loading...</>}
             controls={true}
-            muted={muted}
+            muted={shouldMute}
           />
         </Center>
       </HStack>
