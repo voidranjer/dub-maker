@@ -66,9 +66,9 @@ export default function SubSeeker({
     }
 
     function getBorder() {
-      if (isPlaying) return "2px solid green";
-      if (isSelected) return "2px dotted blue";
-      // if (hasPlayed) return "2px solid gray";
+      if (isPlaying || isLastPlayed) return "2px dotted green";
+      if (isSelected) return "2px solid blue";
+      // if (hasPlayed) return "2px solid red";
       return "2px solid transparent"; // transparent border ensures that adding border doesn't add on to the size
     }
 
