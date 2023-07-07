@@ -12,6 +12,7 @@ interface PropsType {
   selectedStart: number;
   setSelectedStart: (seconds: number) => void;
   playingStart: number;
+  setPlaying: (isPlaying: boolean) => void;
 }
 
 export default function SubSeeker({
@@ -20,6 +21,7 @@ export default function SubSeeker({
   selectedStart,
   setSelectedStart,
   playingStart,
+  setPlaying,
 }: PropsType) {
   const containerRef = useRef(null);
   const currentLineRef = useRef(null);
@@ -74,6 +76,7 @@ export default function SubSeeker({
       onClick: () => {
         player.current?.seekTo(sub.start);
         setSelectedStart(sub.start);
+        setPlaying(true);
       },
       _hover: {
         cursor: "pointer",

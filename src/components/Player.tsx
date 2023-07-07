@@ -26,7 +26,6 @@ export default function Player({ url }: { url: string }) {
     setPlaying,
     setSelectedStart,
     selectedStart,
-    selectedEnd,
     playingStart,
     playedSeconds,
   } = useCoreClock(subs);
@@ -90,6 +89,7 @@ export default function Player({ url }: { url: string }) {
               selectedStart={selectedStart}
               setSelectedStart={setSelectedStart}
               playingStart={playingStart}
+              setPlaying={setPlaying}
             />
           )}
         </Center>
@@ -117,7 +117,7 @@ export default function Player({ url }: { url: string }) {
 
       <AudioRecorder
         start={selectedStart}
-        end={selectedEnd}
+        subs={subs}
         addRecording={addRecording}
       />
     </>
