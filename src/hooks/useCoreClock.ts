@@ -11,20 +11,27 @@ export default function useCoreClock(subs: SubtitleStoreType | undefined) {
   // Stale Closure Problem: https://stackoverflow.com/questions/65253665/settimeout-for-this-state-vs-usestate/66435915#66435915
   const isPlayingRef = useRef(false);
   const subsRef = useRef(subs);
+  const playingStartRef = useRef(playingStart);
   useEffect(() => {
     isPlayingRef.current = isPlaying;
     subsRef.current = subs;
-  }, [isPlaying, subs]);
+    playingStartRef.current = playingStart;
+  }, [isPlaying, subs, playingStart]);
   useEffect(() => {
     setInterval(updatePlayingStart, vars.progressInterval); // decoupled clock from video player / other components
   }, []);
 
   function updatePlayingStart() {
-    // not playing anything
-    if (!isPlayingRef.current) return;
-
     // stale closure fix
+    const isPlaying = isPlayingRef.current;
     const subs = subsRef.current;
+    const playedSeconds = playedSecondsRef.current;
+    const playingStart = playingStartRef.current;
+
+    // not playing anything
+    if (!isPlaying) return;
+
+    // subtitle check
     if (subs === undefined) {
       console.warn(
         "SEARCH ME IN CODE ERROR: useCoreClock called before subs were loaded"
@@ -33,7 +40,6 @@ export default function useCoreClock(subs: SubtitleStoreType | undefined) {
     }
 
     // not playing any line
-    const playedSeconds = playedSecondsRef.current;
     if (
       playingStart != -1 &&
       playedSeconds >= subs.subtitles[subs.startToId[playingStart]].end
