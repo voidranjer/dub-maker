@@ -23,16 +23,15 @@ export default function Player({ url }: { url: string }) {
   const subs: SubtitleStoreType = data as SubtitleStoreType;
   const {
     isPlaying,
-    setPlayedSeconds,
+    setPlaying,
     setSelectedStart,
     selectedStart,
     selectedEnd,
     playingStart,
-    // playedSeconds,
+    playedSeconds,
   } = useCoreClock(subs);
   const { addRecording, recordings } = useRecordingStore();
 
-  const playedSeconds = useRef(0);
   const [muted, setMuted] = useState(false);
   // const playheadEnd = useRef(0); // useState works here too! (i've decided to use useRef to potentially reduce rerenders)
   // const roundedCurrSecs = round(playedSeconds);
@@ -58,6 +57,7 @@ export default function Player({ url }: { url: string }) {
   //   // else setMuted(false);
   // }, [playedSeconds]);
 
+  // rerender notification
   console.log(playedSeconds.current);
 
   return (
@@ -99,6 +99,8 @@ export default function Player({ url }: { url: string }) {
             ref={player}
             url={url}
             playing={isPlaying}
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
             progressInterval={vars.progressInterval}
             // onSeek={(playedSeconds) => setCurrStart(round(playedSeconds - 0.1))}
             // WARNING: bug when seeking using player controls instead of SubSeeker: "sub is undefined" because the selected seconds in the player controls does not have a subtitle that starts at the exact same second
