@@ -9,8 +9,7 @@ import AudioRecorder from "src/components/AudioRecorder";
 import vars from "src/lib/vars";
 import round from "src/utils/round";
 import { SubtitleStoreType } from "src/types/subtitles";
-import useRecordingStore from "src/hooks/useRecordingStore";
-import playBlob from "src/utils/playBlob";
+import useRecordings from "src/hooks/useRecordings";
 
 // chakra imports
 import { FcFullTrash } from "react-icons/fc";
@@ -29,7 +28,7 @@ export default function Player({ url }: { url: string }) {
     playingStart,
     playedSecondsRef,
   } = useCoreClock(subs);
-  const { addRecording, shouldMute } = useRecordingStore(playedSecondsRef);
+  const { addRecording, shouldMute } = useRecordings(playedSecondsRef);
 
   // rerender notification
   console.log(playedSecondsRef.current);

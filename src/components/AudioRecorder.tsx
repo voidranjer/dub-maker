@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useAudioRecorder from "src/hooks/useAudioRecorder";
-import { AddRecordingFnType } from "src/hooks/useRecordingStore";
+import { AddRecordingFnType } from "src/hooks/useRecordings";
 import { SubtitleStoreType } from "src/types/subtitles";
 
 interface PropsType {

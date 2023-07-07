@@ -9,7 +9,7 @@ export type AddRecordingFnType = (
   audioBlob: Blob
 ) => void;
 
-export default function useRecordingStore(
+export default function useRecording(
   playedSecondsRef: React.MutableRefObject<number>
 ) {
   const recordingsRef = useRef<RecordingStore>({});
