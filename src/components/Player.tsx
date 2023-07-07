@@ -6,6 +6,7 @@ import SubSeeker from "src/components/SubSeeker";
 import useSubtitles from "src/hooks/useSubtitles";
 import useCoreClock from "src/hooks/useCoreClock";
 import AudioRecorder from "src/components/AudioRecorder";
+import vars from "src/lib/vars";
 import round from "src/utils/round";
 import { SubtitleStoreType } from "src/types/subtitles";
 import useRecordingStore from "src/hooks/useRecordingStore";
@@ -13,7 +14,7 @@ import playBlob from "src/utils/playBlob";
 
 // chakra imports
 import { FcFullTrash } from "react-icons/fc";
-import { Box, Button, Center, HStack, Heading, Icon } from "@chakra-ui/react";
+import { Button, Center, HStack, Heading, Icon } from "@chakra-ui/react";
 
 export default function Player({ url }: { url: string }) {
   const player = useRef<ReactPlayer>(null);
@@ -27,12 +28,14 @@ export default function Player({ url }: { url: string }) {
     selectedStart,
     selectedEnd,
     playingStart,
+    // playedSeconds,
   } = useCoreClock(subs);
   const { addRecording, recordings } = useRecordingStore();
 
+  const playedSeconds = useRef(0);
   const [muted, setMuted] = useState(false);
   // const playheadEnd = useRef(0); // useState works here too! (i've decided to use useRef to potentially reduce rerenders)
-  // const roundedCurrSecs = round(currSeconds);
+  // const roundedCurrSecs = round(playedSeconds);
 
   // useEffect(() => {
   //   if (!subs) return;
@@ -53,7 +56,9 @@ export default function Player({ url }: { url: string }) {
   //     return;
   //   }
   //   // else setMuted(false);
-  // }, [currSeconds]);
+  // }, [playedSeconds]);
+
+  console.log(playedSeconds.current);
 
   return (
     <>
@@ -94,10 +99,13 @@ export default function Player({ url }: { url: string }) {
             ref={player}
             url={url}
             playing={isPlaying}
-            progressInterval={1}
+            progressInterval={vars.progressInterval}
             // onSeek={(playedSeconds) => setCurrStart(round(playedSeconds - 0.1))}
             // WARNING: bug when seeking using player controls instead of SubSeeker: "sub is undefined" because the selected seconds in the player controls does not have a subtitle that starts at the exact same second
-            onProgress={(obj) => setPlayedSeconds(obj.playedSeconds)}
+            // onProgress={(obj) => setPlayedSeconds(obj.playedSeconds)}
+            onProgress={
+              (obj) => (playedSeconds.current = round(obj.playedSeconds)) // fine tune vars.progressInterval + vars.subsInterval (which affects the util/round.ts function precision) so that 0.0 to 0.9 seconds are all captured.
+            }
             fallback={<>Player loading...</>}
             controls={true}
             muted={muted}

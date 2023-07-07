@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SubtitleStoreType } from "src/types/subtitles";
 
 export default function useCoreClock(subs: SubtitleStoreType | undefined) {
   const [isPlaying, setPlaying] = useState(false);
-  const [playedSeconds, setPlayedSeconds] = useState(0);
   const [selectedEnd, setSelectedEnd] = useState(0);
   const [selectedStart, setSelectedStart_] = useState(0);
   const [playingStart, setPlayingStart] = useState(-1);
+  const playedSeconds = useRef(0); // useRef instead of useState to prevent unnecessary rerenders
 
   function setSelectedStart(start: number) {
     if (subs === undefined) {
@@ -48,11 +48,11 @@ export default function useCoreClock(subs: SubtitleStoreType | undefined) {
 
   return {
     isPlaying, // used to control react-player (play/pause)
-    setPlayedSeconds, // set current position in the video
     setSelectedStart, // set current selected subtitle start time (selected when seeking from SubSeeker)
     selectedStart,
     selectedEnd,
     playingStart, // starting time (played seconds) of the currently playing subtitle line. "-1" if no line is currently being played i.e. background music, no current voicelines (used to highlight the current line)
+    // setPlayedSeconds, // set current position in the video
     playedSeconds, // NOTE: playedSeconds is the most updated/rerendered, reduce usage as much as possible to optimize performance
   };
 }
