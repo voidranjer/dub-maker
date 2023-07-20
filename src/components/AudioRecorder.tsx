@@ -1,7 +1,10 @@
+import { Button, Tag } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import useAudioRecorder from "src/hooks/useAudioRecorder";
 import { AddRecordingFnType } from "src/hooks/useRecordings";
 import { SubtitleStoreType } from "src/types/subtitles";
+import { BsFillRecordCircleFill } from "react-icons/bs";
 
 interface PropsType {
   start: number;
@@ -15,7 +18,7 @@ export default function AudioRecorder({
   addRecording,
 }: PropsType) {
   const [end, setEnd] = useState(-1);
-  const { startRecording } = useAudioRecorder((blob) =>
+  const { startRecording, isRecording } = useAudioRecorder((blob) =>
     addRecording(start, end, blob)
   );
 
@@ -34,16 +37,37 @@ export default function AudioRecorder({
 
   if (end === -1)
     return (
-      <>Error: AudioRecorder component can't find duration of the curent line</>
+      <Tag colorScheme="blue" mt="5">
+        Select a line to record...
+      </Tag>
     );
 
   if (subs === undefined) return <>Upload subtitles to record...</>;
 
   return (
     <div className="audio-container">
-      <button onClick={() => startRecording((end - start) * 1000)}>
-        Record
-      </button>
+      {!isRecording ? (
+        <Button
+          colorScheme="red"
+          mt="5"
+          rounded="full"
+          leftIcon={<BsFillRecordCircleFill />}
+          onClick={() => startRecording((end - start) * 1000)}
+        >
+          Record
+        </Button>
+      ) : (
+        <CountdownCircleTimer
+          isPlaying
+          duration={end - start}
+          size={60}
+          strokeWidth={5}
+          colors={["#72CC50", "#72CC50", "#72CC50", "#B8293D"]}
+          colorsTime={[10, 10, 2, 0]}
+        >
+          {({ remainingTime }) => remainingTime}
+        </CountdownCircleTimer>
+      )}
     </div>
   );
 }

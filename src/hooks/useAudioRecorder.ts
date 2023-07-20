@@ -5,9 +5,12 @@ import sleep from "src/utils/sleep";
 export default function useAudioRecorder(callbackFn: (blob: Blob) => void) {
   const [stream, setStream] = useState<MediaStream>(new MediaStream());
   const [blob, setBlob] = useState(null);
+  const [isRecording, setRecording] = useState(false);
   const recorderRef = useRef(null);
 
   async function startRecording(autostop = 0) {
+    setRecording(true);
+
     const mediaStream = await navigator.mediaDevices.getUserMedia({
       audio: true,
     });
@@ -21,6 +24,8 @@ export default function useAudioRecorder(callbackFn: (blob: Blob) => void) {
   }
 
   async function handleStop() {
+    setRecording(false);
+
     recorderRef.current.stopRecording((blobURL) => {
       // console.log(blobURL);
       const recordedBlob = recorderRef.current.getBlob();
@@ -33,5 +38,5 @@ export default function useAudioRecorder(callbackFn: (blob: Blob) => void) {
     invokeSaveAsDialog(blob);
   }
 
-  return { stream, blob, startRecording };
+  return { stream, blob, startRecording, isRecording };
 }
