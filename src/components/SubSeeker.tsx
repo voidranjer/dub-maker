@@ -1,10 +1,9 @@
 import ReactPlayer from "react-player";
 import { SubtitleStoreType, SubtitleType } from "src/types/subtitles";
-
-// chakra imports
-import { Box, Code, IconButton } from "@chakra-ui/react";
-import { FcBookmark } from "react-icons/fc";
 import { useEffect, useRef, useState } from "react";
+
+import { Box, Code, IconButton, Stack } from "@chakra-ui/react";
+import { FcBookmark, FcStart } from "react-icons/fc";
 
 interface PropsType {
   player: React.RefObject<ReactPlayer>;
@@ -13,6 +12,7 @@ interface PropsType {
   setSelectedStart: (seconds: number) => void;
   playingStart: number;
   setPlaying: (isPlaying: boolean) => void;
+  checkHasRecording: (startTime: number) => boolean;
 }
 
 export default function SubSeeker({
@@ -22,6 +22,7 @@ export default function SubSeeker({
   setSelectedStart,
   playingStart,
   setPlaying,
+  checkHasRecording,
 }: PropsType) {
   const containerRef = useRef(null);
   const currentLineRef = useRef(null);
@@ -57,8 +58,10 @@ export default function SubSeeker({
     const isLastPlayed = sub.start === lastPlayed;
     // const hasPlayed = currSeconds >= sub.end;
     const hasPlayed = true;
+    const hasRecording = checkHasRecording(sub.start);
 
     function getColorScheme() {
+      if (hasRecording) return "pink";
       if (isSelected) return "blue";
       if (isPlaying) return "green";
       if (hasPlayed) return "gray";
@@ -97,9 +100,12 @@ export default function SubSeeker({
     };
 
     return (
-      <Code {...props} ref={isPlaying ? currentLineRef : null}>
-        {sub.text}
-      </Code>
+      <Stack direction="row" align="center">
+        {hasRecording && <FcStart />}
+        <Code {...props} ref={isPlaying ? currentLineRef : null}>
+          {sub.text}
+        </Code>
+      </Stack>
     );
 
     // TODO: custom scroll bar
@@ -110,7 +116,7 @@ export default function SubSeeker({
   if (!player || player.current === null) return <>Waiting for player...</>;
 
   return (
-    <Box position="relative">
+    <Box position="relative" mb="5">
       <IconButton
         icon={<FcBookmark />}
         w="fit-content"

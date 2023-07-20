@@ -27,6 +27,10 @@ export default function useRecording(
     };
   };
 
+  function checkHasRecording(startTime: number) {
+    return startTime in recordingsRef.current;
+  }
+
   // Stale Closure Problem: https://stackoverflow.com/questions/65253665/settimeout-for-this-state-vs-usestate/66435915#66435915
   const shouldMuteRef = useRef(shouldMute);
   useEffect(() => {
@@ -56,5 +60,5 @@ export default function useRecording(
     setInterval(autoReplaceAudio, vars.progressInterval);
   }, []);
 
-  return { addRecording, shouldMute };
+  return { addRecording, shouldMute, checkHasRecording };
 }

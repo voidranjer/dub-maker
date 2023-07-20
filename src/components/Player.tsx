@@ -28,7 +28,8 @@ export default function Player({ url }: { url: string }) {
     playingStart,
     playedSecondsRef,
   } = useCoreClock(subs);
-  const { addRecording, shouldMute } = useRecordings(playedSecondsRef);
+  const { addRecording, shouldMute, checkHasRecording } =
+    useRecordings(playedSecondsRef);
 
   // rerender notification
   console.log(playedSecondsRef.current);
@@ -64,6 +65,7 @@ export default function Player({ url }: { url: string }) {
               setSelectedStart={setSelectedStart}
               playingStart={playingStart}
               setPlaying={setPlaying}
+              checkHasRecording={checkHasRecording}
             />
           )}
         </Center>

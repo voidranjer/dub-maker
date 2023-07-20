@@ -1,4 +1,4 @@
-import { Button, Tag } from "@chakra-ui/react";
+import { Button, Stack, Tag } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import useAudioRecorder from "src/hooks/useAudioRecorder";
@@ -36,11 +36,7 @@ export default function AudioRecorder({
   }, [start, subs]);
 
   if (end === -1)
-    return (
-      <Tag colorScheme="blue" mt="5">
-        Select a line to record...
-      </Tag>
-    );
+    return <Tag colorScheme="blue">Select a line to begin recording...</Tag>;
 
   if (subs === undefined) return <>Upload subtitles to record...</>;
 
@@ -49,7 +45,6 @@ export default function AudioRecorder({
       {!isRecording ? (
         <Button
           colorScheme="red"
-          mt="5"
           rounded="full"
           leftIcon={<BsFillRecordCircleFill />}
           onClick={() => startRecording((end - start) * 1000)}
@@ -57,16 +52,19 @@ export default function AudioRecorder({
           Record
         </Button>
       ) : (
-        <CountdownCircleTimer
-          isPlaying
-          duration={end - start}
-          size={60}
-          strokeWidth={5}
-          colors={["#72CC50", "#72CC50", "#72CC50", "#B8293D"]}
-          colorsTime={[10, 10, 2, 0]}
-        >
-          {({ remainingTime }) => remainingTime}
-        </CountdownCircleTimer>
+        <Stack direction="row" align="center" spacing="5">
+          <CountdownCircleTimer
+            isPlaying
+            duration={end - start}
+            size={60}
+            strokeWidth={5}
+            colors={["#72CC50", "#72CC50", "#72CC50", "#B8293D"]}
+            colorsTime={[10, 10, 2, 0]}
+          >
+            {({ remainingTime }) => remainingTime}
+          </CountdownCircleTimer>
+          <Button isLoading loadingText="Recording..." rounded="full" />
+        </Stack>
       )}
     </div>
   );

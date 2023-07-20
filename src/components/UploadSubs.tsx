@@ -1,3 +1,4 @@
+import { Input, Stack } from "@chakra-ui/react";
 import { ChangeEvent, useState } from "react";
 import useUploadSubs from "src/hooks/useUploadSubs";
 import { UploadSubData } from "src/types/firestore";
@@ -42,8 +43,13 @@ export default function UploadSubs() {
   }
 
   return (
-    <div className="uploadsubs-container">
-      <input type="file" onChange={handleFileChange} accept=".srt" />
+    <Stack direction="row" align="center">
+      <Input
+        variant="filled"
+        type="file"
+        onChange={handleFileChange}
+        accept=".srt"
+      />
 
       {/* <div>{file && `${file.name} - ${file.type}`}</div> */}
 
@@ -54,6 +60,6 @@ export default function UploadSubs() {
       >
         Upload Subtitles
       </button>
-    </div>
+    </Stack>
   );
 }
