@@ -36,7 +36,7 @@ export default function Player({ url }: { url: string }) {
 
   return (
     <>
-      <HStack w="100%" mb="10">
+      <HStack w="100%" mb="10" spacing={5}>
         <Heading color="blue.500" marginRight="auto">
           Dub Maker v1
         </Heading>

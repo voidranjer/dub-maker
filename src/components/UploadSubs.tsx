@@ -1,9 +1,10 @@
-import { Input, Stack } from "@chakra-ui/react";
+import { IconButton, Input, Stack } from "@chakra-ui/react";
 import { ChangeEvent, useState } from "react";
 import useUploadSubs from "src/hooks/useUploadSubs";
 import { UploadSubData } from "src/types/firestore";
 import round from "src/utils/round";
 import srtParser2 from "srt-parser-2";
+import { FiUpload } from "react-icons/fi";
 
 export default function UploadSubs() {
   const [file, setFile] = useState<File>();
@@ -53,13 +54,14 @@ export default function UploadSubs() {
 
       {/* <div>{file && `${file.name} - ${file.type}`}</div> */}
 
-      <button
+      <IconButton
+        icon={<FiUpload />}
+        aria-label="Upload subtitles"
         onClick={handleUploadClick}
-        aria-busy={isLoading ? "true" : "false"}
-        disabled={!file || isLoading}
-      >
-        Upload Subtitles
-      </button>
+        isLoading={isLoading}
+        disabled={!file}
+        variant="outline"
+      />
     </Stack>
   );
 }
